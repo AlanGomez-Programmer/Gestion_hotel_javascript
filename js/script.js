@@ -24,7 +24,7 @@ function mostarMenu(){
             buscarHabitacion(mostarMenu);
             break;
         case "4": 
-            console.log("4. Cambiar estado de Habitación");
+            cambiarEstadoHabitacion(mostarMenu);
             break;
         case "5": 
             console.log("5. Eliminar Habitación");
@@ -46,7 +46,7 @@ function registrarHabitacion(callback){
     let numeroHabitacion = prompt("Ingrese el número de habitación");
     let tipoHabitacion = prompt("Ingrese el tipo de habitación\n(Sencilla, Doble o Suite)");
     let precioNOche = prompt("Precio por Noche: ");
-    let estadoHabitacion = prompt("Ingrese el estado de la habitación\n(Libre, Ocumpada o Limpieza)");
+    let estadoHabitacion = prompt("Ingrese el estado de la habitación\n(Libre, Ocupada o Limpieza)");
     let huespeEnHabitación = prompt("Ingrese el Nombre del huesped\n(Si esta libre solo ingrese Enter)");
 
     let habitacion = {
@@ -125,3 +125,39 @@ function buscarHabitacion(callback){
 
     }, 2000);
 }
+
+// Cambiar estado de la Habitación
+
+function cambiarEstadoHabitacion(callback) {
+
+    let numeroHabitacion = prompt(
+        "Ingrese el número de habitación"
+    );
+
+    console.log("Buscando habitación...");
+
+    setTimeout(function () {
+
+        let habitacionBuscada = habitaciones.find(function (habitacion) {
+            return habitacion.numeroHabitacion === numeroHabitacion;
+        });
+
+        if (habitacionBuscada) {
+            let nuevoEstado = prompt(
+                "Ingrese el nuevo estado\n" +
+                "(Libre, Ocupada o Limpieza)"
+            );
+
+            habitacionBuscada.estadoHabitacion = nuevoEstado;
+            if (nuevoEstado === "Ocupada") {
+                habitacionBuscada.huespeEnHabitación = prompt("Ingrese el nombre del huésped");
+            } else {
+                habitacionBuscada.huespeEnHabitación = "";
+            }
+            console.log("Estado actualizado correctamente.");
+        } else {
+            console.log("Habitación no encontrada.");
+        }
+        callback();
+    }, 2000);
+};
