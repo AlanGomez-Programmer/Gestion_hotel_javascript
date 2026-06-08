@@ -15,7 +15,7 @@ function mostarMenu(){
 
     switch (opcion) {
         case "1": 
-            console.log("1. Registrar Habitación");
+            registrarHabitacion(mostarMenu)
             break;
         case "2": 
             console.log("2. Listar Habitación");
@@ -39,3 +39,28 @@ function mostarMenu(){
 }
 
 mostarMenu()
+
+// Registro de habitación
+
+function registrarHabitacion(callback){
+    let numeroHabitacion = prompt("Ingrese el número de habitación");
+    let tipoHabitacion = prompt("Ingrese el tipo de habitación\n(Sencilla, Doble o Suite)");
+    let precioNOche = prompt("Precio por Noche: ");
+    let estadoHabitacion = prompt("Ingrese el estado de la habitación\n(Libre, Ocumpada o Limpieza)");
+    let huespeEnHabitación = prompt("Ingrese el Nombre del huesped\n(Si esta libre solo ingrese Enter)");
+
+    let habitacion = {
+        numeroHabitacion,
+        tipoHabitacion,
+        precioNOche,
+        estadoHabitacion,
+        huespeEnHabitación
+    };
+
+    console.log("Validando información de la habitación....");
+    setTimeout(function(){
+        habitaciones.push(habitacion);
+        console.log("Habitación registrada correctamente")
+        callback()
+    }, 2000);
+};
