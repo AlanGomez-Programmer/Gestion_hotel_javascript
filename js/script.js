@@ -21,7 +21,7 @@ function mostarMenu(){
             listarHabitacion(mostarMenu);
             break;
         case "3": 
-            console.log("3. Buscar Habitación");
+            buscarHabitacion(mostarMenu);
             break;
         case "4": 
             console.log("4. Cambiar estado de Habitación");
@@ -88,3 +88,40 @@ function listarHabitacion(callback){
     }, 2000);
 
 };
+
+// Busacar habitacion
+
+function buscarHabitacion(callback){
+
+    let numeroHabitacion = prompt("Ingrese el número de habitación");
+
+    console.log("Consultando la base de datos del hotel...");
+
+    setTimeout(function(){
+
+        let habitacionBuscada = habitaciones.find(function(habitacion){
+            return habitacion.numeroHabitacion === numeroHabitacion;
+        });
+
+        if(habitacionBuscada){
+
+            console.log("=======================");
+            console.log(`No. Habitación Consultada: ${habitacionBuscada.numeroHabitacion}`);
+            console.log(`Tipo de Habitación: ${habitacionBuscada.tipoHabitacion}`);
+            console.log(`Precio por Noche: Q${habitacionBuscada.precioNOche}`);
+            console.log(`Estado: ${habitacionBuscada.estadoHabitacion}`);
+
+            if(habitacionBuscada.huespeEnHabitación === ""){
+                console.log("Huésped: Esta libre");
+            }else{
+                console.log(`Huésped: ${habitacionBuscada.huespeEnHabitación}`);
+            }
+
+        }else{
+            console.log("Habitación no encontrada");
+        }
+
+        callback();
+
+    }, 2000);
+}
