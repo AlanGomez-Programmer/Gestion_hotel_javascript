@@ -3,7 +3,7 @@ let habitaciones = [];
 // Menú
 
 function mostarMenu(){
-    let menu = "========== MENU HABITACIONES ==========\n"+
+    let menu = "========== HOTEL ==========\n"+
         "1. Regitrar Nueva Habitación\n"+
         "2. Listar Habitación\n"+
         "3. Buscar Habitación\n"+
