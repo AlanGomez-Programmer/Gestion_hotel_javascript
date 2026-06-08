@@ -27,7 +27,7 @@ function mostarMenu(){
             cambiarEstadoHabitacion(mostarMenu);
             break;
         case "5": 
-            console.log("5. Eliminar Habitación");
+            eliminarHabitacion(mostarMenu);
             break;
         case "6":
             console.log("Bye, Bye");
@@ -67,27 +67,36 @@ function registrarHabitacion(callback){
 
 // Listar Habitación
 function listarHabitacion(callback){
-    // let {numeroHabitacion, tipoHabitacion, precioNOche, estadoHabitacion, huespeEnHabitación} = habitaciones;
+
+    if (habitaciones.length === 0){
+        console.log("No hay habitaciones registradas aún.");
+
+        setTimeout(function(){
+            callback();
+        }, 2000);
+        return;
+    }
 
     habitaciones.forEach(function(habitacion){
         console.log("=======================");
-        console.log(`No.Habitación: ${habitacion.numeroHabitacion}`);
+        console.log(`No. Habitación: ${habitacion.numeroHabitacion}`);
         console.log(`Tipo de Habitación: ${habitacion.tipoHabitacion}`);
         console.log(`Precio por Noche: Q${habitacion.precioNOche}`);
         console.log(`Estado: ${habitacion.estadoHabitacion}`);
-        huesped = habitacion.huespeEnHabitación;
+
+        let huesped = habitacion.huespeEnHabitación;
+
         if (huesped === ""){
-            console.log(`Nombre del Huesped: Esta Libre`);
+            console.log("Nombre del Huésped: Está libre");
         }else{
-            console.log(`Nombre del Huesped: ${huesped}`);
+            console.log(`Nombre del Huésped: ${huesped}`);
         }
-    })
-
+    });
+    
     setTimeout(function(){
-        callback()
+        callback();
     }, 2000);
-
-};
+}
 
 // Busacar habitacion
 
@@ -104,13 +113,11 @@ function buscarHabitacion(callback){
         });
 
         if(habitacionBuscada){
-
             console.log("=======================");
             console.log(`No. Habitación Consultada: ${habitacionBuscada.numeroHabitacion}`);
             console.log(`Tipo de Habitación: ${habitacionBuscada.tipoHabitacion}`);
             console.log(`Precio por Noche: Q${habitacionBuscada.precioNOche}`);
             console.log(`Estado: ${habitacionBuscada.estadoHabitacion}`);
-
             if(habitacionBuscada.huespeEnHabitación === ""){
                 console.log("Huésped: Esta libre");
             }else{
@@ -156,6 +163,31 @@ function cambiarEstadoHabitacion(callback) {
             }
             console.log("Estado actualizado correctamente.");
         } else {
+            console.log("Habitación no encontrada.");
+        }
+        callback();
+    }, 2000);
+};
+
+// Eliminar habitacion
+
+function eliminarHabitacion(callback){
+
+    let numeroHabitacion = prompt(
+        "Ingrese el número de habitación a eliminar"
+    );
+
+    console.log("Buscando habitación...");
+
+    setTimeout(function(){
+        let indice = habitaciones.findIndex(function(habitacion){
+            return habitacion.numeroHabitacion === numeroHabitacion;
+        });
+
+        if(indice !== -1){
+            habitaciones.splice(indice, 1);
+            console.log("Habitación eliminada correctamente.");
+        }else{
             console.log("Habitación no encontrada.");
         }
         callback();
