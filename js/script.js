@@ -18,7 +18,7 @@ function mostarMenu(){
             registrarHabitacion(mostarMenu)
             break;
         case "2": 
-            console.log("2. Listar Habitación");
+            listarHabitacion(mostarMenu);
             break;
         case "3": 
             console.log("3. Buscar Habitación");
@@ -63,4 +63,28 @@ function registrarHabitacion(callback){
         console.log("Habitación registrada correctamente")
         callback()
     }, 2000);
+};
+
+// Listar Habitación
+function listarHabitacion(callback){
+    // let {numeroHabitacion, tipoHabitacion, precioNOche, estadoHabitacion, huespeEnHabitación} = habitaciones;
+
+    habitaciones.forEach(function(habitacion){
+        console.log("=======================");
+        console.log(`No.Habitación: ${habitacion.numeroHabitacion}`);
+        console.log(`Tipo de Habitación: ${habitacion.tipoHabitacion}`);
+        console.log(`Precio por Noche: Q${habitacion.precioNOche}`);
+        console.log(`Estado: ${habitacion.estadoHabitacion}`);
+        huesped = habitacion.huespeEnHabitación;
+        if (huesped === ""){
+            console.log(`Nombre del Huesped: Esta Libre`);
+        }else{
+            console.log(`Nombre del Huesped: ${huesped}`);
+        }
+    })
+
+    setTimeout(function(){
+        callback()
+    }, 2000);
+
 };
