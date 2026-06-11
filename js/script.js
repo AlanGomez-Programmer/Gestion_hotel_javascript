@@ -1,53 +1,96 @@
+const consola = document.getElementById("consola");
 let habitaciones = [];
 
-// Menú
+function simulacionTiempoEspera(tiempo){
+    return new Promise((resolve)=>{
+        setTimeout(resolve, tiempo);
+    });
+}
 
-function mostarMenu(){
-    let menu = "========== HOTEL ==========\n"+
-        "1. Regitrar Nueva Habitación\n"+
-        "2. Listar Habitación\n"+
-        "3. Buscar Habitación\n"+
-        "4. Cambiar estado de Habitación\n"+
-        "5. Eliminar Habitación\n"+
-        "6. Salir"
+function imprimir(texto){
+    const p = document.createElement("p");
+    p.textContent = texto;
+    consola.appendChild(p);
+}
+
+function limpiarConsola(){
+    consola.replaceChildren();
+}
+
+function esperarVista(){
+    return simulacionTiempoEspera(0);
+}
+
+// Menú 
+
+async function mostarMenu(){
+
+    await esperarVista();
+
+    let menu =
+        "========== HOTEL ==========\n" +
+        "1. Registrar Nueva Habitación\n" +
+        "2. Listar Habitaciones\n" +
+        "3. Buscar Habitación\n" +
+        "4. Cambiar Estado de Habitación\n" +
+        "5. Eliminar Habitación\n" +
+        "6. Salir";
 
     let opcion = prompt(menu);
 
-    switch (opcion) {
-        case "1": 
-            registrarHabitacion(mostarMenu)
+    switch(opcion){
+
+        case "1":
+            await registrarHabitacion(mostarMenu);
             break;
-        case "2": 
-            listarHabitacion(mostarMenu);
+
+        case "2":
+            await listarHabitacion(mostarMenu);
             break;
-        case "3": 
-            buscarHabitacion(mostarMenu);
+
+        case "3":
+            await buscarHabitacion(mostarMenu);
             break;
-        case "4": 
-            cambiarEstadoHabitacion(mostarMenu);
+
+        case "4":
+            await cambiarEstadoHabitacion(mostarMenu);
             break;
-        case "5": 
-            eliminarHabitacion(mostarMenu);
+
+        case "5":
+            await eliminarHabitacion(mostarMenu);
             break;
+
         case "6":
-            console.log("Bye, Bye");
-            break;
+            limpiarConsola();
+            imprimir("Bye Bye");
+            return;
+
         default:
-            console.log("No existe esa opción");
+            limpiarConsola();
+            imprimir("Opción no válida");
             mostarMenu();
     }
 }
 
-mostarMenu()
+mostarMenu();
 
-// Registro de habitación
+// Registrar habitación
 
 function registrarHabitacion(callback){
+
+    limpiarConsola();
+
     let numeroHabitacion = prompt("Ingrese el número de habitación");
-    let tipoHabitacion = prompt("Ingrese el tipo de habitación\n(Sencilla, Doble o Suite)");
-    let precioNOche = prompt("Precio por Noche: ");
-    let estadoHabitacion = prompt("Ingrese el estado de la habitación\n(Libre, Ocupada o Limpieza)");
-    let huespeEnHabitación = prompt("Ingrese el Nombre del huesped\n(Si esta libre solo ingrese Enter)");
+    let tipoHabitacion = prompt(
+        "Ingrese el tipo de habitación\n(Sencilla, Doble o Suite)"
+    );
+    let precioNOche = prompt("Precio por noche:");
+    let estadoHabitacion = prompt(
+        "Ingrese el estado de la habitación\n(Libre, Ocupada o Limpieza)"
+    );
+    let huespeEnHabitación = prompt(
+        "Ingrese el nombre del huésped\n(Si está libre presione Enter)"
+    );
 
     let habitacion = {
         numeroHabitacion,
@@ -57,75 +100,102 @@ function registrarHabitacion(callback){
         huespeEnHabitación
     };
 
-    console.log("Validando información de la habitación....");
-    setTimeout(()=>{
-        habitaciones.push(habitacion);
-        console.log("Habitación registrada correctamente")
-        callback()
-    }, 2000);
-};
+    imprimir("Validando información de la habitación...");
 
-// Listar Habitación
+    setTimeout(()=>{
+
+        habitaciones.push(habitacion);
+
+        limpiarConsola();
+        imprimir("Habitación registrada correctamente");
+
+        callback();
+
+    }, 2000);
+}
+
+// Listar habitaciones
+
 function listarHabitacion(callback){
 
-    if (habitaciones.length === 0){
-        console.log("No hay habitaciones registradas aún.");
+    limpiarConsola();
+
+    if(habitaciones.length === 0){
+
+        imprimir("No hay habitaciones registradas aún.");
 
         setTimeout(()=>{
             callback();
         }, 2000);
+
         return;
     }
 
     habitaciones.forEach(function(habitacion){
-        console.log("=======================");
-        console.log(`No. Habitación: ${habitacion.numeroHabitacion}`);
-        console.log(`Tipo de Habitación: ${habitacion.tipoHabitacion}`);
-        console.log(`Precio por Noche: Q${habitacion.precioNOche}`);
-        console.log(`Estado: ${habitacion.estadoHabitacion}`);
 
-        let huesped = habitacion.huespeEnHabitación;
+        imprimir(`No. Habitación: ${habitacion.numeroHabitacion}`);
+        imprimir(`Tipo: ${habitacion.tipoHabitacion}`);
+        imprimir(`Precio por Noche: Q${habitacion.precioNOche}`);
+        imprimir(`Estado: ${habitacion.estadoHabitacion}`);
 
-        if (huesped === ""){
-            console.log("Nombre del Huésped: Está libre");
+        if(habitacion.huespeEnHabitación === ""){
+            imprimir("Huésped: Está libre");
         }else{
-            console.log(`Nombre del Huésped: ${huesped}`);
+            imprimir(`Huésped: ${habitacion.huespeEnHabitación}`);
         }
     });
-    
-    setTimeout(function(){
+
+    setTimeout(()=>{
         callback();
     }, 2000);
 }
 
-// Busacar habitacion
-
+// Buscar habitación
 function buscarHabitacion(callback){
 
-    let numeroHabitacion = prompt("Ingrese el número de habitación");
+    limpiarConsola();
 
-    console.log("Consultando la base de datos del hotel...");
+    let numeroHabitacion = prompt(
+        "Ingrese el número de habitación"
+    );
+
+    imprimir("Consultando base de datos...");
 
     setTimeout(()=>{
+
+        limpiarConsola();
 
         let habitacionBuscada = habitaciones.find(function(habitacion){
             return habitacion.numeroHabitacion === numeroHabitacion;
         });
 
         if(habitacionBuscada){
-            console.log("=======================");
-            console.log(`No. Habitación Consultada: ${habitacionBuscada.numeroHabitacion}`);
-            console.log(`Tipo de Habitación: ${habitacionBuscada.tipoHabitacion}`);
-            console.log(`Precio por Noche: Q${habitacionBuscada.precioNOche}`);
-            console.log(`Estado: ${habitacionBuscada.estadoHabitacion}`);
+
+            imprimir(`No. Habitación: ${habitacionBuscada.numeroHabitacion}`);
+
+            imprimir(
+                `Tipo: ${habitacionBuscada.tipoHabitacion}`
+            );
+
+            imprimir(
+                `Precio por Noche: Q${habitacionBuscada.precioNOche}`
+            );
+
+            imprimir(
+                `Estado: ${habitacionBuscada.estadoHabitacion}`
+            );
+
             if(habitacionBuscada.huespeEnHabitación === ""){
-                console.log("Huésped: Esta libre");
+                imprimir("Huésped: Está libre");
             }else{
-                console.log(`Huésped: ${habitacionBuscada.huespeEnHabitación}`);
+                imprimir(
+                    `Huésped: ${habitacionBuscada.huespeEnHabitación}`
+                );
             }
 
         }else{
-            console.log("Habitación no encontrada");
+
+            imprimir("Habitación no encontrada");
         }
 
         callback();
@@ -133,63 +203,88 @@ function buscarHabitacion(callback){
     }, 2000);
 }
 
-// Cambiar estado de la Habitación
+// Cambiar estado
+function cambiarEstadoHabitacion(callback){
 
-function cambiarEstadoHabitacion(callback) {
+    limpiarConsola();
 
     let numeroHabitacion = prompt(
         "Ingrese el número de habitación"
     );
 
-    console.log("Buscando habitación...");
+    imprimir("Buscando habitación...");
 
     setTimeout(()=>{
 
-        let habitacionBuscada = habitaciones.find(function (habitacion) {
+        limpiarConsola();
+
+        let habitacionBuscada = habitaciones.find(function(habitacion){
             return habitacion.numeroHabitacion === numeroHabitacion;
         });
 
-        if (habitacionBuscada) {
+        if(habitacionBuscada){
+
             let nuevoEstado = prompt(
                 "Ingrese el nuevo estado\n" +
                 "(Libre, Ocupada o Limpieza)"
             );
 
             habitacionBuscada.estadoHabitacion = nuevoEstado;
-            if (nuevoEstado === "Ocupada") {
-                habitacionBuscada.huespeEnHabitación = prompt("Ingrese el nombre del huésped");
-            } else {
+
+            if(nuevoEstado === "Ocupada"){
+
+                habitacionBuscada.huespeEnHabitación =
+                    prompt("Ingrese el nombre del huésped");
+
+            }else{
+
                 habitacionBuscada.huespeEnHabitación = "";
             }
-            console.log("Estado actualizado correctamente.");
-        } else {
-            console.log("Habitación no encontrada.");
-        }
-        callback();
-    }, 2000);
-};
 
-// Eliminar habitacion
+            imprimir("Estado actualizado correctamente");
+
+        }else{
+
+            imprimir("Habitación no encontrada");
+        }
+
+        callback();
+
+    }, 2000);
+}
+
+// Eliminar habitación
 
 function eliminarHabitacion(callback){
+
+    limpiarConsola();
 
     let numeroHabitacion = prompt(
         "Ingrese el número de habitación a eliminar"
     );
 
-    console.log("Buscando habitación...");
+    imprimir("Buscando habitación...");
 
     setTimeout(()=>{
+
+        limpiarConsola();
+
         let indice = habitaciones.findIndex(function(habitacion){
             return habitacion.numeroHabitacion === numeroHabitacion;
         });
 
         if(indice !== -1){
+
             habitaciones.splice(indice, 1);
-            console.log("Habitación eliminada correctamente.");
+
+            imprimir("Habitación eliminada correctamente");
+
         }else{
-            console.log("Habitación no encontrada.");
+
+            imprimir("Habitación no encontrada");
         }
+
         callback();
+
     }, 2000);
-};
+}
