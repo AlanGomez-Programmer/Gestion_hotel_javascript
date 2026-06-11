@@ -58,7 +58,7 @@ function registrarHabitacion(callback){
     };
 
     console.log("Validando información de la habitación....");
-    setTimeout(function(){
+    setTimeout(()=>{
         habitaciones.push(habitacion);
         console.log("Habitación registrada correctamente")
         callback()
@@ -71,7 +71,7 @@ function listarHabitacion(callback){
     if (habitaciones.length === 0){
         console.log("No hay habitaciones registradas aún.");
 
-        setTimeout(function(){
+        setTimeout(()=>{
             callback();
         }, 2000);
         return;
@@ -106,7 +106,7 @@ function buscarHabitacion(callback){
 
     console.log("Consultando la base de datos del hotel...");
 
-    setTimeout(function(){
+    setTimeout(()=>{
 
         let habitacionBuscada = habitaciones.find(function(habitacion){
             return habitacion.numeroHabitacion === numeroHabitacion;
@@ -143,7 +143,7 @@ function cambiarEstadoHabitacion(callback) {
 
     console.log("Buscando habitación...");
 
-    setTimeout(function () {
+    setTimeout(()=>{
 
         let habitacionBuscada = habitaciones.find(function (habitacion) {
             return habitacion.numeroHabitacion === numeroHabitacion;
@@ -179,7 +179,7 @@ function eliminarHabitacion(callback){
 
     console.log("Buscando habitación...");
 
-    setTimeout(function(){
+    setTimeout(()=>{
         let indice = habitaciones.findIndex(function(habitacion){
             return habitacion.numeroHabitacion === numeroHabitacion;
         });
